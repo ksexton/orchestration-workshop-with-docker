@@ -23,4 +23,4 @@ services:
             AWS_INSTANCE_TYPE: ${AWS_INSTANCE_TYPE}
             AWS_VPC_ID: ${AWS_VPC_ID}
             USER: ${USER}
-        entrypoint: /root/prepare-vms/scripts/trainer-cli
+        #entrypoint: /root/prepare-vms/scripts/trainer-cli

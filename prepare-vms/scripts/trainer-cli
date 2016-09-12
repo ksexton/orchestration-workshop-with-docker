@@ -79,7 +79,10 @@ pull_tag(){
             ubuntu:latest \
             fedora:latest \
             centos:latest \
+            elasticsearch \
             postgres \
+            registry \
+            alpine \
             redis \
             training/namer \
             nathanleclaire/redisonrails; do
@@ -396,8 +399,11 @@ run_cli() {
         result=$(aws ec2 run-instances \
             --key-name $AWS_KEY_NAME \
             --count $2 \
-            --instance-type c3.large \
+            --instance-type m3.medium \
             --client-token $TOKEN \
+            --subnet-id subnet-3b0de116 \
+            --security-group-ids sg-9b3ba5e1 \
+            --associate-public-ip-address \
             --image-id $AMI)
         reservation_id=$(echo "$result" | head -1 | awk '{print $2}' )
         echo "      Key name: $AWS_KEY_NAME"

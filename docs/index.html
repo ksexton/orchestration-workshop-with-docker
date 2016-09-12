@@ -101,7 +101,7 @@ Docker <br/> Orchestration <br/> Workshop
 
 ## Logistics
 
-- Hello! We're `jerome at docker dot com` and `aj at soulshake dot net`
+- Hello! I'm bret@bretfisher.com
 
 <!--
 - Hello! I'm `jerome at docker dot com`
@@ -115,27 +115,11 @@ on time, it's a good idea to have a breakfast with the attendees
 at e.g. 9am, and start at 9:30.
 -->
 
-- Agenda:
 
-.small[
-- 09:00-09:15 hello
-- 09:15-10:45 part 1
-- 10:45-11:00 coffee break
-- 11:00-12:30 part 2
-- 12:30-13:30 lunch break
-- 13:30-15:00 part 3
-- 15:00-15:15 coffee break
-- 15:15-16:45 part 4
-- 16:45-17:30 Q&A
-]
-
-<!--
-- The tutorial will run from 1pm to 5pm
-
-- There will be a break at 2:45pm (stop me if I don't!)
--->
 
 - All the content is publicly available (slides, code samples, scripts)
+  - Repo: [workshop.bretfisher.com](http://workshop.bretfisher.com)
+  - Slides: Follow Along [workshopslides.bretfisher.com](https://bretfisher.github.io/docker-orchestration-workshop/)
 
 <!--
 Remember to change:
@@ -143,8 +127,7 @@ Remember to change:
 - the "tweet my speed" hashtag in DockerCoins HTML
 -->
 
-- Live feedback, questions, help on
-  [Gitter](http://container.training/chat)
+- Live feedback, questions, help on 757Dev Slack #docker
 
 ---
 
@@ -177,17 +160,17 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 
 - Breaking into an overlay network
 - Rolling updates
-- Centralized logging
-- Setting up ELK to store container logs
+- (EXTRA CREDIT) Centralized logging
+- (EXTRA CREDIT) Setting up ELK to store container logs
 
 ---
 
 ## Chapter 4: deeper in Swarm
 
-- Dealing with stateful services
-- Scripting image building and pushing
-- Docker Application Bundles
-- Controlling Docker from a container
+- (EXTRA CREDIT) Dealing with stateful services
+- (EXTRA CREDIT) Scripting image building and pushing
+- (EXTRA CREDIT) Docker Application Bundles
+- (EXTRA CREDIT) Controlling Docker from a container
 - Node management
 
 ---
@@ -198,7 +181,8 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 
   - on Linux, OS X, FreeBSD... you are probably all set
 
-  - on Windows, get [putty](http://www.putty.org/),
+  - on Windows, get [putty](http://www.putty.org/), or
+  Microsoft [Win32 OpenSSH](https://github.com/PowerShell/Win32-OpenSSH/wiki/Install-Win32-OpenSSH), or
   [Git BASH](https://git-for-windows.github.io/), or
   [MobaXterm](http://mobaxterm.mobatek.net/)
 
@@ -234,9 +218,9 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 .exercise[
 
 - This is the stuff you're supposed to do!
-- Go to [container.training](http://container.training/) to view these slides
+- Go to [workshopslides.bretfisher.com](https://bretfisher.github.io/docker-orchestration-workshop/) to view these slides
 - Join the chat room on
-  [Gitter](http://container.training/chat)
+  [757Dev #docker](https://757dev.slack.com/messages/docker/)
 
 ]
 
@@ -245,9 +229,9 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 # VM environment
 
 - Each person gets 5 private VMs (not shared with anybody else)
-- They'll be up until tonight
+- They'll be up until midnight
 - You have a little card with login+password+IP addresses
-- You can automatically SSH from one VM to another
+- You can automatically SSH from one VM to another using friendly names
 
 .exercise[
 
@@ -351,16 +335,16 @@ You are welcome to use the method that you feel the most comfortable with.
 # Our sample application
 
 - Visit the GitHub repository with all the materials of this workshop:
-  <br/>https://github.com/jpetazzo/orchestration-workshop
+  <br/>http://workshop.bretfisher.com
 
 - The application is in the [dockercoins](
-  https://github.com/jpetazzo/orchestration-workshop/tree/master/dockercoins)
+  https://github.com/bretfisher/docker-orchestration-workshop/tree/master/dockercoins)
   subdirectory
 
 - Let's look at the general layout of the source code:
 
   there is a Compose file [docker-compose.yml](
-  https://github.com/jpetazzo/orchestration-workshop/blob/master/dockercoins/docker-compose.yml) ...
+  https://github.com/bretfisher/docker-orchestration-workshop/blob/master/dockercoins/docker-compose.yml) ...
 
   ... and 4 other services, each in its own directory:
 
@@ -452,7 +436,7 @@ class: pic
 
 - Clone the repository on `node1`:
   ```bash
-  git clone git://github.com/jpetazzo/orchestration-workshop
+  git clone git://github.com/bretfisher/docker-orchestration-workshop
   ```
 
 ]
@@ -469,7 +453,7 @@ Without further ado, let's start our application.
 
 - Go to the `dockercoins` directory, in the cloned repo:
   ```bash
-  cd ~/orchestration-workshop/dockercoins
+  cd ~/docker-orchestration-workshop/dockercoins
   ```
 
 - Use Compose to build and run all containers:
@@ -620,7 +604,7 @@ Tip: use `^S` and `^Q` to pause/resume log output.
 
 .exercise[
 
-- run `top` to see CPU and memory usage (you should see idle cycles)
+- run `htop` to see CPU and memory usage (you should see idle cycles)
 
 - run `vmstat 3` to see I/O usage (si/so/bi/bo)
   <br/>(the 4 numbers should be almost zero, except `bo` for logging)
@@ -826,7 +810,7 @@ class: title
 
 - A *node* can be a *manager* or a *worker*
 
-  (Note: in SwarmKit, *managers* are also *workers*)
+  (Note: in SwarmKit, *managers* are also *workers*, unless we *drain* them)
 
 - A *manager* actively takes part in the Raft consensus
 
@@ -871,7 +855,7 @@ You can refer to the [NOMENCLATURE](https://github.com/docker/swarmkit/blob/mast
 
 - The SwarmKit API is also exposed (on a separate socket)
 
----
+???
 
 
 ## Illustration
@@ -1070,7 +1054,7 @@ ID             HOSTNAME         STATUS  AVAILABILITY  MANAGER STATUS
 ehb0...4fvx    ip-172-31-4-180  Ready   Active
 ```
 
----
+???
 
 ## Adding nodes using the Docker API
 
@@ -1118,13 +1102,13 @@ The node keys and certificates are automatically renewed on regular intervals (b
 
 .exercise[
 
-- Add nodes 4 and 5 to the cluster as *managers* (instead of simple *workers*):
-  ```bash
+- Add nodes 4 and 5 to the cluster as *managers* (instead of simple *workers*)
+  <!-- ```bash
     for N in 4 5; do
       DOCKER_HOST=tcp://node$N:55555 docker swarm join \
         --token $(docker swarm join-token -q manager) node1:2377
     done
-  ```
+  ``` -->
 
 ]
 
@@ -2212,7 +2196,7 @@ WHY?!?
 
 .exercise[
 
-- Edit `~/orchestration-workshop/dockercoins/worker/worker.py`
+- Edit `~/docker-orchestration-workshop/dockercoins/worker/worker.py`
 
 - Locate the line that has a `sleep` instruction
 
@@ -3446,7 +3430,9 @@ class: title
 
 # Thanks! <br/> Questions?
 
-## [@jpetazzo](https://twitter.com/jpetazzo) <br/> [@docker](https://twitter.com/docker)
+## [@BretFisher](https://twitter.com/bretfisher) <br/> [@docker](https://twitter.com/docker)
+
+## Signup for my Docker Kung Fu Newsletter: [bretfisher.com](http://www.bretfisher.com)
 
     </textarea>
     <script src="remark-0.13.min.js" type="text/javascript">
