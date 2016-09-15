@@ -134,7 +134,7 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 - VM environment
 - Our sample application
 - Running the application
-- Identifying bottlenecks
+- Identifying bottlenecks (EXTRA CREDIT)
 - Introducing SwarmKit
 
 ---
@@ -167,7 +167,7 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 
 ---
 
-# Pre-requirements
+## Pre-requirements
 
 - Computer with network connection and SSH client
 
@@ -218,7 +218,7 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 
 ---
 
-# VM environment
+## VM environment
 
 - Each person gets 5 private VMs (not shared with anybody else)
 - They'll be up until midnight
@@ -292,7 +292,7 @@ You are welcome to use the method that you feel the most comfortable with.
 
 ---
 
-## Tmux cheatsheet
+## Tmux cheatsheet (EXTRA CREDIT)
 
 - Ctrl-b c → creates a new window
 - Ctrl-b n → go to next window
@@ -324,7 +324,37 @@ You are welcome to use the method that you feel the most comfortable with.
 
 ---
 
-# Our sample application
+
+## What's this application we're deploying?
+
+---
+
+class: pic
+
+![DockerCoins logo](dockercoins.png)
+
+(DockerCoins 2016 logo courtesy of [@XtlCnslt](https://twitter.com/xtlcnslt) and [@ndeloof](https://twitter.com/ndeloof). Thanks!)
+
+---
+
+## What's this application we're deploying?
+
+- It is a DockerCoin miner! 💰🐳📦🚢
+
+- No, you can't buy coffee with DockerCoins
+
+- How DockerCoins works:
+
+  - `worker` asks to `rng` to give it random bytes
+  - `worker` feeds those random bytes into `hasher`
+  - each hash starting with `0` is a DockerCoin
+  - DockerCoins are stored in `redis`
+  - `redis` is also updated every second to track speed
+  - you can see the progress with the `webui`
+
+---
+
+# DockerCoins Repo
 
 - Visit the GitHub repository with all the materials of this workshop:
   <br/>http://workshop.bretfisher.com
@@ -344,6 +374,55 @@ You are welcome to use the method that you feel the most comfortable with.
   - `hasher` = web service computing hash of POSTed data
   - `worker` = background process using `rng` and `hasher`
   - `webui` = web interface to watch progress
+
+---
+
+## Getting DockerCoins source code
+
+- We will clone the GitHub repository
+
+- The repository also contains scripts and tools that we will use through the workshop
+
+.exercise[
+
+<!--
+```bash
+[ -d orchestration-workshop ] && mv orchestration-workshop orchestration-workshop.$$
+```
+-->
+
+- Clone the repository on `node1`:
+  ```bash
+  git clone git://github.com/bretfisher/orchestration-workshop-with-docker
+  ```
+
+]
+
+(You can also fork the repository on GitHub and clone your fork if you prefer that.)
+
+---
+
+# Running DockerCoins with docker-compose on one node
+
+Without further ado, let's start our application.
+
+.exercise[
+
+- Go to the `dockercoins` directory, in the cloned repo:
+  ```bash
+  cd ~/orchestration-workshop-with-docker/dockercoins
+  ```
+
+- Use Compose to build and run all containers:
+  ```bash
+  docker-compose up
+  ```
+
+]
+
+Compose tells Docker to build all container images (pulling
+the corresponding base images), then starts all containers,
+and displays aggregated logs.
 
 ---
 
@@ -383,84 +462,6 @@ You are welcome to use the method that you feel the most comfortable with.
 
 ---
 
-## What's this application?
-
----
-
-class: pic
-
-![DockerCoins logo](dockercoins.png)
-
-(DockerCoins 2016 logo courtesy of [@XtlCnslt](https://twitter.com/xtlcnslt) and [@ndeloof](https://twitter.com/ndeloof). Thanks!)
-
----
-
-## What's this application?
-
-- It is a DockerCoin miner! 💰🐳📦🚢
-
-- No, you can't buy coffee with DockerCoins
-
-- How DockerCoins works:
-
-  - `worker` asks to `rng` to give it random bytes
-  - `worker` feeds those random bytes into `hasher`
-  - each hash starting with `0` is a DockerCoin
-  - DockerCoins are stored in `redis`
-  - `redis` is also updated every second to track speed
-  - you can see the progress with the `webui`
-
----
-
-## Getting the application source code
-
-- We will clone the GitHub repository
-
-- The repository also contains scripts and tools that we will use through the workshop
-
-.exercise[
-
-<!--
-```bash
-[ -d orchestration-workshop ] && mv orchestration-workshop orchestration-workshop.$$
-```
--->
-
-- Clone the repository on `node1`:
-  ```bash
-  git clone git://github.com/bretfisher/orchestration-workshop-with-docker
-  ```
-
-]
-
-(You can also fork the repository on GitHub and clone your fork if you prefer that.)
-
----
-
-# Running the application
-
-Without further ado, let's start our application.
-
-.exercise[
-
-- Go to the `dockercoins` directory, in the cloned repo:
-  ```bash
-  cd ~/orchestration-workshop-with-docker/dockercoins
-  ```
-
-- Use Compose to build and run all containers:
-  ```bash
-  docker-compose up
-  ```
-
-]
-
-Compose tells Docker to build all container images (pulling
-the corresponding base images), then starts all containers,
-and displays aggregated logs.
-
-???
-
 ## Lots of logs
 
 - The application continuously generates logs
@@ -486,7 +487,7 @@ and displays aggregated logs.
 - Some containers exit immediately, others take longer
   <br/>(because they don't handle `SIGTERM` and end up being killed after a 10s timeout)
 
-???
+---
 
 ## Restarting in the background
 
@@ -508,9 +509,9 @@ and displays aggregated logs.
 
 `docker-compose ps` also shows the ports exposed by the application.
 
-???
+---
 
-## Viewing logs
+## Viewing logs (EXTRA CREDIT)
 
 - The `docker-compose logs` command works like `docker logs`
 
@@ -536,9 +537,9 @@ and displays aggregated logs.
 
 Tip: use `^S` and `^Q` to pause/resume log output.
 
-???
+---
 
-## Upgrading from Compose 1.6
+## Upgrading from Compose 1.6 (EXTRA CREDIT)
 
 .warning[The `logs` command has changed between Compose 1.6 and 1.7!]
 
@@ -576,9 +577,9 @@ Tip: use `^S` and `^Q` to pause/resume log output.
 
   - between two consecutive updates, the counter will increase either by 4, or by 0
 
-???
+---
 
-## Scaling up the application
+## Scaling up the application (EXTRA CREDIT)
 
 - Our goal is to make that performance graph go up (without changing a line of code!)
 
@@ -588,9 +589,9 @@ Tip: use `^S` and `^Q` to pause/resume log output.
 
 - For that, we will use good old UNIX tools on our Docker node
 
-???
+---
 
-## Looking at resource usage
+## Looking at resource usage (EXTRA CREDIT)
 
 - Let's look at CPU, memory, and I/O usage
 
@@ -610,7 +611,7 @@ We have available resources.
 
 ---
 
-## Scaling workers on a single node
+## Scaling workers on a single node (EXTRA CREDIT)
 
 - Docker Compose supports scaling
 - Let's scale `worker` and see what happens!
@@ -630,9 +631,9 @@ We have available resources.
 
 ]
 
-???
+---
 
-## Adding more workers
+## Adding more workers (EXTRA CREDIT)
 
 - Great, let's add more workers and call it a day, then!
 
@@ -850,9 +851,9 @@ You can refer to the [NOMENCLATURE](https://github.com/docker/swarmkit/blob/mast
 
 ## You need to enable Swarm mode to use the new stuff
 
-- By default, everything runs as usual
+- By default, everything runs as usual (i.e. `docker run`)
 
-- ** *Internet IS CONFUSED BY THIS*. Docker Engines runs similar to <= 1.11 until you enable Swarm Mode.**
+- ** *Internet IS CONFUSED BY THIS*. Docker Engines in 1.12 runs same as <= 1.11 until you enable Swarm Mode.**
 
 - Swarm Mode can be enabled, "unlocking" SwarmKit functions
   <br/>(services, out-of-the-box overlay networks, etc.)
@@ -1434,7 +1435,7 @@ We just have to adapt this to our application, which has 4 services!
 
 ---
 
-## Using Docker Hub
+## Using Docker Hub (EXTRA CREDIT)
 
 - Set the `DOCKER_REGISTRY` environment variable to your Docker Hub user name
   <br/>(the `build-tag-push.py` script prefixes each image name with that variable)
@@ -1468,7 +1469,7 @@ We just have to adapt this to our application, which has 4 services!
 
 ---
 
-## Using Docker Trusted Registry
+## Using Docker Trusted Registry (EXTRA CREDIT)
 
 If we wanted to use DTR, we would:
 
@@ -1778,7 +1779,8 @@ You should see the performance peaking at 10 hashes/s (like before).
 ## Global scheduling
 
 - We want to utilize as best as we can the entropy generators
-  on our nodes
+  on our nodes (this is pretend reason to do global,
+  more likely you'll want log/monitor agents on each node)
 
 - We want to run exactly one `rng` instance per node
 
@@ -1839,7 +1841,7 @@ class: title
 
 ---
 
-## Finding the real cause of the bottleneck
+## Finding the real cause of the bottleneck (EXTRA CREDIT)
 
 - We want to debug our app as we scale `worker` up and down
 
@@ -1851,7 +1853,7 @@ class: title
 
 ---
 
-# Breaking into an overlay network
+# Breaking into an overlay network (EXTRA CREDIT)
 
 - We will create a dummy placeholder service on our network
 
@@ -1875,7 +1877,7 @@ I don't need to SSH to another node.
 
 ---
 
-## Entering the debug container
+## Entering the debug container (EXTRA CREDIT)
 
 - Once our container is started (which should be really fast because the alpine image is small), we can enter it (from any node)
 
@@ -1893,9 +1895,9 @@ I don't need to SSH to another node.
 
 ]
 
-???
+---
 
-## Labels
+## Labels (EXTRA CREDIT)
 
 - We can also be fancy and find the ID of the container automatically
 
@@ -1917,7 +1919,7 @@ I don't need to SSH to another node.
 
 ---
 
-## Installing our debugging tools
+## Installing our debugging tools (EXTRA CREDIT)
 
 - Ideally, you would author your own image, with all your favorite tools, and use it instead of the base `alpine` image
 
@@ -1934,7 +1936,7 @@ I don't need to SSH to another node.
 
 ---
 
-## Investigating the `rng` service
+## Investigating the `rng` service (EXTRA CREDIT)
 
 - First, let's check what `rng` resolves to
 
@@ -1952,7 +1954,7 @@ It is a virtual IP address (VIP) for the `rng` service.
 
 ---
 
-## Investigating the VIP
+## Investigating the VIP (EXTRA CREDIT)
 
 .exercise[
 
@@ -1970,7 +1972,7 @@ Current behavior for VIPs is to ping when there is a backend available on the sa
 
 ---
 
-## What if I don't like VIPs?
+## What if I don't like VIPs? (EXTRA CREDIT)
 
 - Services can be published using two modes: VIP and DNSRR.
 
@@ -1988,7 +1990,7 @@ Current behavior for VIPs is to ping when there is a backend available on the sa
 
 ---
 
-## Testing and benchmarking our service
+## Testing and benchmarking our service (EXTRA CREDIT)
 
 - We will check that the service is up with `rng`, then
   benchmark it with `ab`
@@ -2012,7 +2014,7 @@ before continuing.
 
 ---
 
-## Benchmarking `rng`
+## Benchmarking `rng` (EXTRA CREDIT)
 
 We will send 50 requests, but with various levels of concurrency.
 
@@ -2032,7 +2034,7 @@ We will send 50 requests, but with various levels of concurrency.
 
 ---
 
-## Benchmark results for `rng`
+## Benchmark results for `rng` (EXTRA CREDIT)
 
 - When serving requests sequentially, they each take 100ms
 
@@ -2042,7 +2044,7 @@ We will send 50 requests, but with various levels of concurrency.
 
 ---
 
-## Benchmarking `hasher`
+## Benchmarking `hasher` (EXTRA CREDIT)
 
 We will do the same tests for `hasher`.
 
@@ -2061,7 +2063,7 @@ First, we need to put the POST payload in a temporary file.
 
 ---
 
-## Benchmarking `hasher`
+## Benchmarking `hasher` (EXTRA CREDIT)
 
 Once again, we will send 50 requests, with different levels of concurrency.
 
@@ -2081,7 +2083,7 @@ Once again, we will send 50 requests, with different levels of concurrency.
 
 ---
 
-## Benchmark results for `hasher`
+## Benchmark results for `hasher` (EXTRA CREDIT)
 
 - The sequential benchmarks takes ~5 seconds to complete
 
@@ -2097,11 +2099,11 @@ Once again, we will send 50 requests, with different levels of concurrency.
 
 class: title
 
-Why?
+Why? (EXTRA CREDIT)
 
 ---
 
-## Why does everything take (at least) 100ms?
+## Why does everything take (at least) 100ms? (EXTRA CREDIT)
 
 --
 
@@ -2121,11 +2123,11 @@ class: title
 
 But ...
 
-WHY?!?
+WHY?!? (EXTRA CREDIT)
 
 ---
 
-## Why did we sprinkle this sample app with sleeps?
+## Why did we sprinkle this sample app with sleeps? (EXTRA CREDIT)
 
 - Deterministic performance
   <br/>(regardless of instance speed, CPUs, I/O...)
@@ -2146,7 +2148,7 @@ WHY?!?
 
 ---
 
-## Why do `rng` and `hasher` behave differently?
+## Why do `rng` and `hasher` behave differently? (EXTRA CREDIT)
 
 ![Equations on a blackboard](equations.png)
 
@@ -2307,7 +2309,7 @@ By default, SwarmKit does a rolling upgrade, one instance at a time.
 
 ---
 
-## Getting cluster-wide task information
+## Getting cluster-wide task information (EXTRA CREDIT)
 
 - The Docker API doesn't expose this directly (yet)
 
@@ -2324,7 +2326,7 @@ By default, SwarmKit does a rolling upgrade, one instance at a time.
 
 ---
 
-## Building `swarmctl`
+## Building `swarmctl` (EXTRA CREDIT)
 
 - I thought I would enjoy a 1-minute break at this point
 
@@ -2343,7 +2345,7 @@ By default, SwarmKit does a rolling upgrade, one instance at a time.
 
 ---
 
-## Using `swarmctl`
+## Using `swarmctl` (EXTRA CREDIT)
 
 - The Docker Engine places the SwarmKit control socket in a special path
 
@@ -2361,7 +2363,7 @@ By default, SwarmKit does a rolling upgrade, one instance at a time.
 
 ---
 
-## `swarmctl` in action
+## `swarmctl` in action (EXTRA CREDIT)
 
 - Let's review a few useful `swarmctl` commands
 
@@ -2381,7 +2383,7 @@ By default, SwarmKit does a rolling upgrade, one instance at a time.
 
 ---
 
-## Caveat
+## Caveat (EXTRA CREDIT)
 
 - SwarmKit is vendored into the Docker Engine
 
@@ -2396,7 +2398,7 @@ Error: grpc: failed to unmarshal the received message proto: wrong wireType = 0
 
 ---
 
-# Centralized logging
+# Centralized logging (EXTRA CREDIT)
 
 - We want to send all our container logs to a central place
 
@@ -2412,7 +2414,7 @@ Error: grpc: failed to unmarshal the received message proto: wrong wireType = 0
 
 ---
 
-# Setting up ELK to store container logs
+# Setting up ELK to store container logs (EXTRA CREDIT)
 
 *Important foreword: this is not an "official" or "recommended"
 setup; it is just an example. We used ELK in this demo because
@@ -2431,7 +2433,7 @@ What we will do:
 
 ---
 
-## What's in an ELK stack?
+## What's in an ELK stack? (EXTRA CREDIT)
 
 - ELK is three components:
 
@@ -2452,7 +2454,7 @@ What we will do:
 
 ---
 
-## Setting up ELK
+## Setting up ELK (EXTRA CREDIT)
 
 - We need three containers: ElasticSearch, Logstash, Kibana
 
@@ -2474,7 +2476,7 @@ What we will do:
 
 ---
 
-## Setting up Kibana
+## Setting up Kibana (EXTRA CREDIT)
 
 - Kibana exposes the web UI
 
@@ -2497,7 +2499,7 @@ What we will do:
 
 ---
 
-## Setting up Logstash
+## Setting up Logstash (EXTRA CREDIT)
 
 - Logstash needs some configuration to listen to GELF messages and send them to ElasticSearch
 
@@ -2517,7 +2519,7 @@ What we will do:
 
 ---
 
-## Checking Logstash
+## Checking Logstash (EXTRA CREDIT)
 
 - Before proceeding, let's make sure that Logstash started properly
 
@@ -2537,7 +2539,7 @@ What we will do:
 
 ---
 
-## View Logstash logs
+## View Logstash logs (EXTRA CREDIT)
 
 .exercise[
 
@@ -2566,7 +2568,7 @@ You should see the heartbeat messages:
 
 ---
 
-## Testing the GELF receiver
+## Testing the GELF receiver (EXTRA CREDIT)
 
 - In a new window, we will generate a logging message
 
@@ -2585,7 +2587,7 @@ The test message should show up in the logstash container logs.
 
 ---
 
-## Sending logs from a service
+## Sending logs from a service (EXTRA CREDIT)
 
 - We were sending from a "classic" container so far; let's send logs from a service instead
 
@@ -2608,7 +2610,7 @@ The test message should show up as well in the logstash container logs.
 
 ---
 
-## Connect to Kibana
+## Connect to Kibana (EXTRA CREDIT)
 
 - The Kibana web UI is exposed on cluster port 5601
 
@@ -2618,7 +2620,7 @@ The test message should show up as well in the logstash container logs.
 
 ---
 
-## "Configuring" Kibana
+## "Configuring" Kibana (EXTRA CREDIT)
 
 - If you see a status page with a yellow item, wait a minute and reload
   (Kibana is probably still initializing)
@@ -2639,7 +2641,7 @@ The test message should show up as well in the logstash container logs.
 
 ---
 
-## Updating our services to use GELF
+## Updating our services to use GELF (EXTRA CREDIT)
 
 - We will now inform our Swarm to add GELF logging to all our services
 
@@ -2663,7 +2665,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Viewing container logs
+## Viewing container logs (EXTRA CREDIT)
 
 - Go back to Kibana
 
@@ -2720,7 +2722,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Building a stateful service experiment
+## Building a stateful service experiment (EXTRA CREDIT)
 
 - We will use Redis for this example
 
@@ -2742,7 +2744,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Accessing our Redis service easily
+## Accessing our Redis service easily (EXTRA CREDIT)
 
 - Typing that whole command is going to be tedious
 
@@ -2762,7 +2764,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Basic Redis commands
+## Basic Redis commands (EXTRA CREDIT)
 
 .exercise[
 
@@ -2785,7 +2787,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Local volumes vs. global volumes
+## Local volumes vs. global volumes (EXTRA CREDIT)
 
 - Global volumes exist in a single namespace
 
@@ -2803,7 +2805,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Local volumes
+## Local volumes (EXTRA CREDIT)
 
 - We will use the default volume driver, `local`
 
@@ -2824,7 +2826,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Where is our data?
+## Where is our data? (EXTRA CREDIT)
 
 - If we look for our `foo` key, it's gone!
 
@@ -2844,7 +2846,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Setting the key again
+## Setting the key again (EXTRA CREDIT)
 
 - Since our database was wiped out, let's populate it again
 
@@ -2864,7 +2866,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Making sure that Redis correctly persists data
+## Making sure that Redis correctly persists data (EXTRA CREDIT)
 
 - Before going further, we need to make sure that Redis correctly saves to disk
 
@@ -2889,7 +2891,7 @@ After ~15 seconds, you should see the log messages in Kibana.
 
 ---
 
-## Instructing Redis to save data on restarts
+## Instructing Redis to save data on restarts (EXTRA CREDIT)
 
 - The default configuration that comes with the `redis` image doesn't save on shutdown
 
@@ -2912,7 +2914,7 @@ See http://redis.io/topics/persistence for more details about Redis persistence.
 
 ---
 
-## Checking persistence across container restarts
+## Checking persistence across container restarts (EXTRA CREDIT)
 
 .exercise[
 
@@ -2936,7 +2938,7 @@ See http://redis.io/topics/persistence for more details about Redis persistence.
 
 ---
 
-## Service updates cause containers to be replaced
+## Service updates cause containers to be replaced (EXTRA CREDIT)
 
 - Let's try to make a trivial update to the service and see what happens
 
@@ -2959,7 +2961,7 @@ even when it is not strictly technically necessary.
 
 ---
 
-## Services volumes are ephemeral
+## Services volumes are ephemeral (EXTRA CREDIT)
 
 - What happened to our data?
 
@@ -2979,7 +2981,7 @@ even when it is not strictly technically necessary.
 
 ---
 
-## Assigning a persistent volume to the container
+## Assigning a persistent volume to the container (EXTRA CREDIT)
 
 - Let's add an explicit volume mount to our service, referencing a named volume
 
@@ -3002,7 +3004,7 @@ Note: the `local` volume driver automatically creates volumes.
 
 ---
 
-## Checking that persistence actually works across service updates
+## Checking that persistence actually works across service updates (EXTRA CREDIT)
 
 .exercise[
 
@@ -3025,7 +3027,7 @@ Note: the `local` volume driver automatically creates volumes.
 
 ---
 
-## Recap
+## Recap (EXTRA CREDIT)
 
 - The service must commit its state to disk when being shutdown
 
@@ -3041,7 +3043,7 @@ Note: the `local` volume driver automatically creates volumes.
 
 ---
 
-## Cleaning up
+## Cleaning up (EXTRA CREDIT)
 
 .exercise[
 
@@ -3061,7 +3063,7 @@ Note: we could keep the volume around if we wanted.
 
 ---
 
-# Scripting image building and pushing
+# Scripting image building and pushing (EXTRA CREDIT)
 
 - Earlier, we used some rather crude shell loops to build and push images
 
@@ -3084,7 +3086,7 @@ Note: Compose tolerates empty (or unset) environment variables, but in this exam
 
 ---
 
-## Updating the Compose file to specify image tags
+## Updating the Compose file to specify image tags (EXTRA CREDIT)
 
 - Let's update the Compose file for DockerCoins to make it easier to push it to our registry
 
@@ -3108,7 +3110,7 @@ You can also directly use the file `docker-compose.yml-images`.
 
 ---
 
-## Use the new Compose file
+## Use the new Compose file (EXTRA CREDIT)
 
 - We need to set `REGISTRY_SLASH` and `COLON_TAG` variables
 
@@ -3132,7 +3134,7 @@ You can also directly use the file `docker-compose.yml-images`.
 
 ---
 
-## Why the weird variable names?
+## Why the weird variable names? (EXTRA CREDIT)
 
 - It would be more intuitive to have:
   ```bash
@@ -3214,11 +3216,11 @@ You can also directly use the file `docker-compose.yml-images`.
 
 --
 
-Oh, right, we need the *experimental* build of Docker!
+Oh, right, we need the *experimental* build of Docker! (actually I did this for you)
 
 ---
 
-## Installing Docker experimental CLI
+## Installing Docker experimental CLI (EXTRA CREDIT)
 
 - We don't need to upgrade our Docker Engines; we just need an upgraded CLI
 
@@ -3237,7 +3239,7 @@ Oh, right, we need the *experimental* build of Docker!
 
 ---
 
-## Using Docker experimental CLI
+## Using Docker experimental CLI (EXTRA CREDIT)
 
 - Just invoke `~/docker/docker` instead of `docker`
 
@@ -3257,7 +3259,7 @@ Oh, right, we need the *experimental* build of Docker!
 
 ---
 
-## Look at the newly deployed stack
+## Look at the newly deployed stack (EXTRA CREDIT)
 
 .exercise[
 
@@ -3277,7 +3279,7 @@ We only need it for `docker stack`.
 
 ---
 
-## Clean up
+## Clean up (EXTRA CREDIT)
 
 - Unsurprisingly, there is a `docker stack rm` command
 
@@ -3292,7 +3294,7 @@ We only need it for `docker stack`.
 
 ---
 
-## Scoping
+## Scoping (EXTRA CREDIT)
 
 - All resources (service names, network names...) are prefixed with the stack name
 
@@ -3318,7 +3320,7 @@ You can specify *most* of them in the DAB itself, but Compose can't generate it 
 
 ---
 
-# Controlling Docker from a container
+# Controlling Docker from a container (EXTRA CREDIT)
 
 - In a local environment, just bind-mount the Docker control socket:
   ```bash
@@ -3340,7 +3342,7 @@ More resources on this topic:
 
 ---
 
-## Bind-mounting the Docker control socket
+## Bind-mounting the Docker control socket (EXTRA CREDIT)
 
 - In Swarm mode, bind-mounting the control socket gives you access to the whole cluster
 
@@ -3353,7 +3355,7 @@ More resources on this topic:
 
 ---
 
-# Node management
+# Node management (EXTRA CREDIT)
 
 - SwarmKit allows to change (almost?) everything on-the-fly
 
@@ -3361,7 +3363,7 @@ More resources on this topic:
 
 ---
 
-## Node availability
+## Node availability (EXTRA CREDIT)
 
 ```bash
 docker node update <node-name> --availability <active|pause|drain>
@@ -3381,7 +3383,7 @@ docker node update <node-name> --availability <active|pause|drain>
 
 ---
 
-## Managers and workers
+## Managers and workers (EXTRA CREDIT)
 
 - Nodes can be promoted to manager with `docker node promote`
 
@@ -3394,7 +3396,7 @@ docker node update <node-name> --availability <active|pause|drain>
 
 ---
 
-## Removing nodes
+## Removing nodes (EXTRA CREDIT)
 
 - You can leave Swarm mode with `docker swarm leave`
 
@@ -3408,7 +3410,7 @@ docker node update <node-name> --availability <active|pause|drain>
 
 ---
 
-## Join tokens and automation
+## Join tokens and automation (EXTRA CREDIT)
 
 - If you have used Docker 1.12-RC: join tokens are now mandatory!
 
@@ -3430,7 +3432,7 @@ class: title
 
 ## [@BretFisher](https://twitter.com/bretfisher) <br/> [@nishanttotla](https://twitter.com/nishanttotla)
 
-## Signup for my Kung Fu Newsletter: [bretfisher.com](http://www.bretfisher.com)
+## Signup for Bret's Docker Learnings Newsletter: [bretfisher.com](http://www.bretfisher.com)
 
     </textarea>
     <script src="remark-0.13.min.js" type="text/javascript">
