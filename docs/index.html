@@ -99,35 +99,27 @@ Docker <br/> Orchestration <br/> Workshop
 
 ---
 
+class: pic
+
+![Strange Loop](strange-loop.png)
+
+
+---
+
 ## Logistics
 
-- Hello! I'm bret@bretfisher.com
+- Hello! We're `bret@bretfisher.com and nishant.totla@docker.com`
 
-<!--
-- Hello! I'm `jerome at docker dot com`
--->
+- Agenda: We've only got 2 hours, lets get busy!
 
-<!--
-Reminder, when updating the agenda: when people are told to show
-up at 9am, they usually trickle in until 9:30am (except for paid
-training sessions). If you're not sure that people will be there
-on time, it's a good idea to have a breakfast with the attendees
-at e.g. 9am, and start at 9:30.
--->
+- Go here to follow along in slides, repo, etc. [bretfisher.com/strangeloop2016](http://www.bretfisher.com/strangeloop2016)
 
+- Live feedback, questions, help on [Strange Loop Slack #docker](https://strangeloop2016.slack.com/messages/docker/)
+  - Backup chat is Gitter: [dockerchat.bretfisher.com](https://gitter.im/BretFisher/orchestration-workshop-with-docker)
 
+- Full ~6hr workshop I forked from: [Jérôme Petazzoni - Docker OG](https://jpetazzo.github.io/orchestration-workshop/)
 
-- All the content is publicly available (slides, code samples, scripts)
-  - Repo: [workshop.bretfisher.com](http://workshop.bretfisher.com)
-  - Slides: Follow Along [workshopslides.bretfisher.com](https://bretfisher.github.io/docker-orchestration-workshop/)
-
-<!--
-Remember to change:
-- the link below
-- the "tweet my speed" hashtag in DockerCoins HTML
--->
-
-- Live feedback, questions, help on 757Dev Slack #docker
+- Ask questions at any time!
 
 ---
 
@@ -158,7 +150,7 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 
 ## Chapter 3: operating the Swarm
 
-- Breaking into an overlay network
+- (EXTRA CREDIT) Breaking into an overlay network
 - Rolling updates
 - (EXTRA CREDIT) Centralized logging
 - (EXTRA CREDIT) Setting up ELK to store container logs
@@ -171,7 +163,7 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 - (EXTRA CREDIT) Scripting image building and pushing
 - (EXTRA CREDIT) Docker Application Bundles
 - (EXTRA CREDIT) Controlling Docker from a container
-- Node management
+- (EXTRA CREDIT) Node management
 
 ---
 
@@ -218,9 +210,9 @@ grep '^# ' index.html | grep -v '<br' | tr '#' '-'
 .exercise[
 
 - This is the stuff you're supposed to do!
-- Go to [workshopslides.bretfisher.com](https://bretfisher.github.io/docker-orchestration-workshop/) to view these slides
+- Go to [workshopslides.bretfisher.com](https://bretfisher.github.io/orchestration-workshop-with-docker/) to view these slides
 - Join the chat room on
-  [757Dev #docker](https://757dev.slack.com/messages/docker/)
+  [Strange Loop Slack #docker](https://strangeloop2016.slack.com/messages/docker/)
 
 ]
 
@@ -338,13 +330,13 @@ You are welcome to use the method that you feel the most comfortable with.
   <br/>http://workshop.bretfisher.com
 
 - The application is in the [dockercoins](
-  https://github.com/bretfisher/docker-orchestration-workshop/tree/master/dockercoins)
+  https://github.com/bretfisher/orchestration-workshop-with-docker/tree/master/dockercoins)
   subdirectory
 
 - Let's look at the general layout of the source code:
 
   there is a Compose file [docker-compose.yml](
-  https://github.com/bretfisher/docker-orchestration-workshop/blob/master/dockercoins/docker-compose.yml) ...
+  https://github.com/bretfisher/orchestration-workshop-with-docker/blob/master/dockercoins/docker-compose.yml) ...
 
   ... and 4 other services, each in its own directory:
 
@@ -436,7 +428,7 @@ class: pic
 
 - Clone the repository on `node1`:
   ```bash
-  git clone git://github.com/bretfisher/docker-orchestration-workshop
+  git clone git://github.com/bretfisher/orchestration-workshop-with-docker
   ```
 
 ]
@@ -453,7 +445,7 @@ Without further ado, let's start our application.
 
 - Go to the `dockercoins` directory, in the cloned repo:
   ```bash
-  cd ~/docker-orchestration-workshop/dockercoins
+  cd ~/orchestration-workshop-with-docker/dockercoins
   ```
 
 - Use Compose to build and run all containers:
@@ -467,7 +459,7 @@ Compose tells Docker to build all container images (pulling
 the corresponding base images), then starts all containers,
 and displays aggregated logs.
 
----
+???
 
 ## Lots of logs
 
@@ -494,7 +486,7 @@ and displays aggregated logs.
 - Some containers exit immediately, others take longer
   <br/>(because they don't handle `SIGTERM` and end up being killed after a 10s timeout)
 
----
+???
 
 ## Restarting in the background
 
@@ -516,7 +508,7 @@ and displays aggregated logs.
 
 `docker-compose ps` also shows the ports exposed by the application.
 
----
+???
 
 ## Viewing logs
 
@@ -584,7 +576,7 @@ Tip: use `^S` and `^Q` to pause/resume log output.
 
   - between two consecutive updates, the counter will increase either by 4, or by 0
 
----
+???
 
 ## Scaling up the application
 
@@ -596,7 +588,7 @@ Tip: use `^S` and `^Q` to pause/resume log output.
 
 - For that, we will use good old UNIX tools on our Docker node
 
----
+???
 
 ## Looking at resource usage
 
@@ -638,7 +630,7 @@ We have available resources.
 
 ]
 
----
+???
 
 ## Adding more workers
 
@@ -666,7 +658,7 @@ killall docker-compose
 
 ]
 
----
+???
 
 # Identifying bottlenecks
 
@@ -676,18 +668,14 @@ killall docker-compose
 
 - *Something else* is slowing us down
 
---
-
 - ... But what?
-
---
 
 - The code doesn't have instrumentation
 
 - Let's use state-of-the-art HTTP performance analysis!
   <br/>(i.e. good old tools like `ab`, `httping`...)
 
----
+???
 
 ## Measuring latency under load
 
@@ -709,7 +697,7 @@ We will use `httping`.
 
 `rng` has a much higher latency than `hasher`.
 
----
+???
 
 ## Let's draw hasty conclusions
 
@@ -745,7 +733,7 @@ class: title
 
 ---
 
-# SwarmKit
+# SwarmKit, aka "Swarm Mode"
 
 - [SwarmKit](https://github.com/docker/swarmkit) is an open source
   toolkit to build multi-node systems
@@ -753,6 +741,8 @@ class: title
 - It is a reusable library, like libcontainer, libnetwork, vpnkit ...
 
 - It is a plumbing part of the Docker ecosystem
+
+- We now see it as Swarm Mode feature of Docker Engine 1.12
 
 - SwarmKit comes with two examples:
 
@@ -855,16 +845,14 @@ You can refer to the [NOMENCLATURE](https://github.com/docker/swarmkit/blob/mast
 
 - The SwarmKit API is also exposed (on a separate socket)
 
-???
-
-
-## Illustration
 
 ---
 
 ## You need to enable Swarm mode to use the new stuff
 
 - By default, everything runs as usual
+
+- ** *Internet IS CONFUSED BY THIS*. Docker Engines runs similar to <= 1.11 until you enable Swarm Mode.**
 
 - Swarm Mode can be enabled, "unlocking" SwarmKit functions
   <br/>(services, out-of-the-box overlay networks, etc.)
@@ -1054,7 +1042,7 @@ ID             HOSTNAME         STATUS  AVAILABILITY  MANAGER STATUS
 ehb0...4fvx    ip-172-31-4-180  Ready   Active
 ```
 
-???
+---
 
 ## Adding nodes using the Docker API
 
@@ -1103,12 +1091,12 @@ The node keys and certificates are automatically renewed on regular intervals (b
 .exercise[
 
 - Add nodes 4 and 5 to the cluster as *managers* (instead of simple *workers*)
-  <!-- ```bash
+ ```bash
     for N in 4 5; do
       DOCKER_HOST=tcp://node$N:55555 docker swarm join \
         --token $(docker swarm join-token -q manager) node1:2377
     done
-  ``` -->
+  ```
 
 ]
 
@@ -1191,6 +1179,10 @@ As we saw earlier, you can only control the Swarm through a manager node.
 
 .exercise[
 
+- ```bash
+  docker service <service-name> ps
+  ```
+
 - Log into the node:
   ```bash
   ssh ip-172-31-XXX-XXX
@@ -1243,7 +1235,7 @@ Go back to `node1` afterwards.
 
 ---
 
-## Expose a service
+## Expose a service using Routing Mesh
 
 - Services can be exposed, with two special properties:
 
@@ -1261,6 +1253,12 @@ Go back to `node1` afterwards.
 
 - You can indicate two port numbers to set the public port number
   <br/>(just like with `docker run -p`)
+
+---
+
+class: pic
+
+![Routing Mesh](ingress-routing-mesh.png)
 
 ---
 
@@ -1895,7 +1893,7 @@ I don't need to SSH to another node.
 
 ]
 
----
+???
 
 ## Labels
 
@@ -2196,7 +2194,7 @@ WHY?!?
 
 .exercise[
 
-- Edit `~/docker-orchestration-workshop/dockercoins/worker/worker.py`
+- Edit `~/orchestration-workshop-with-docker/dockercoins/worker/worker.py`
 
 - Locate the line that has a `sleep` instruction
 
@@ -3430,9 +3428,9 @@ class: title
 
 # Thanks! <br/> Questions?
 
-## [@BretFisher](https://twitter.com/bretfisher) <br/> [@docker](https://twitter.com/docker)
+## [@BretFisher](https://twitter.com/bretfisher) <br/> [@nishanttotla](https://twitter.com/nishanttotla)
 
-## Signup for my Docker Kung Fu Newsletter: [bretfisher.com](http://www.bretfisher.com)
+## Signup for my Kung Fu Newsletter: [bretfisher.com](http://www.bretfisher.com)
 
     </textarea>
     <script src="remark-0.13.min.js" type="text/javascript">

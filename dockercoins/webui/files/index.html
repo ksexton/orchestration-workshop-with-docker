@@ -50,9 +50,9 @@ function refresh () {
             points.push({ x: s2.now, y: speed });
         }
         $("#speed").text("~" + speed.toFixed(1) + " hashes/second");
-        var msg = ("I'm attending @bretfisher #docker workshop, "
+        var msg = ("I'm attending #docker workshop at @strangeloop_stl, "
                    + "and my #DockerCoins mining rig is crunching "
-                   + speed.toFixed(1) + " hashes/second! W00T!");
+                   + speed.toFixed(1) + " hashes/second!");
         $("#tweet").attr(
             "href",
             "https://twitter.com/intent/tweet?text="+encodeURIComponent(msg)

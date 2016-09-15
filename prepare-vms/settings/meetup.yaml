@@ -2,13 +2,13 @@
 
 workshop_name: Docker Orchestration
 workshop_short_name: orchestration
-repo: https://github.com/BretFisher/docker-orchestration-workshop
+repo: https://github.com/BretFisher/orchestration-workshop-with-docker
 
 # remember your local id_rsa public is also added to boxes
 instance_login: docker
 instance_password: training
 
-url: http://bretfisher.com/strangeloop2016/ # moreinfo link printed on cards
+url: http://bretfisher.com/strangeloop2016 # moreinfo link printed on cards
 
 engine_version: experimental.docker.com #extra features that may change/runaway
 #engine_version: test.docker.com
